@@ -1,0 +1,514 @@
+:root {
+    /* Light mode variables */
+    --background: #ffffff;
+    --card-background: #ffffff;
+    --primary: #4353FF;
+    --primary-hover: #3544cc;
+    --success: #10B981;
+    --success-hover: #059669;
+    --text: #1a1a1a;
+    --text-secondary: #666666;
+    --border: #e5e7eb;
+    --gradient-start: #4353FF;
+    --gradient-end: #8B4DFF;
+    --button-text: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --inactive-bg: #f3f4f6;
+}
+
+[data-theme="dark"] {
+    --background: #111111;
+    --card-background: #1a1a1a;
+    --primary: #4353FF;
+    --primary-hover: #3544cc;
+    --success: #10B981;
+    --success-hover: #059669;
+    --text: #ffffff;
+    --text-secondary: #a1a1aa;
+    --border: #27272a;
+    --gradient-start: #4353FF;
+    --gradient-end: #8B4DFF;
+    --button-text: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --inactive-bg: #222222;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--background);
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.container {
+    text-align: center;
+    background-color: var(--card-background);
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px var(--shadow);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+.timer {
+    margin-top: 2.5rem;
+}
+
+#time {
+    font-size: 6rem;
+    font-weight: 700;
+    margin: 1.5rem 0;
+    letter-spacing: -2px;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.controls button {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: var(--primary);
+    color: var(--button-text);
+    letter-spacing: 0.3px;
+}
+
+.controls button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+#resetBtn {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+#resetBtn:hover {
+    background-color: rgba(67, 83, 255, 0.1);
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Theme Switch specific styles */
+.theme-switch {
+    width: 48px;
+    height: 48px;
+}
+
+.theme-switch .slider {
+    background-color: transparent;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.theme-switch .slider:hover {
+    background-color: rgba(0, 166, 126, 0.1);
+}
+
+.theme-switch .slider:before {
+    content: none;
+}
+
+.theme-switch svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.theme-switch .sun {
+    opacity: 1;
+    position: absolute;
+    transform: scale(1) rotate(0);
+}
+
+.theme-switch .moon {
+    opacity: 0;
+    position: absolute;
+    transform: scale(0.5) rotate(90deg);
+}
+
+/* When dark mode is active */
+.theme-switch input:checked+.slider {
+    background-color: transparent;
+}
+
+.theme-switch input:checked+.slider .sun {
+    opacity: 0;
+    transform: scale(0.5) rotate(-90deg);
+}
+
+.theme-switch input:checked+.slider .moon {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+}
+
+/* Remove the theme-label since we're using icons now */
+.theme-label {
+    display: none;
+}
+
+/* Toggle Switch Styles */
+.mode-toggle {
+    background-color: var(--inactive-bg);
+    border: none;
+    border-radius: 12px;
+    padding: 4px;
+    position: relative;
+    display: inline-flex;
+    margin-bottom: 2rem;
+    min-width: 280px;
+}
+
+/* Remove the switch class styles for mode toggle */
+.mode-toggle .switch {
+    display: none;
+}
+
+/* Create the new toggle style */
+.mode-toggle-wrapper {
+    display: flex;
+    width: 100%;
+    position: relative;
+    gap: 4px;
+}
+
+.mode-option {
+    flex: 1;
+    padding: 10px 24px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.mode-option.active {
+    color: var(--button-text);
+    font-weight: 600;
+}
+
+.mode-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 6px);
+    height: calc(100% - 8px);
+    background-color: var(--success);
+    border-radius: 8px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+/* When in break mode, move the slider */
+.mode-toggle[data-mode="break"] .mode-slider {
+    transform: translateX(calc(100% + 8px));
+}
+
+/* Hover states */
+.mode-option:not(.active):hover {
+    color: var(--text);
+    background-color: rgba(67, 83, 255, 0.1);
+}
+
+/* Add subtle animation for timer changes */
+#time,
+#modeText {
+    transition: all 0.3s ease;
+}
+
+/* Add a subtle gradient border glow when timer is running */
+.container.running {
+    border-color: var(--primary);
+    box-shadow: 0 0 40px rgba(67, 83, 255, 0.15);
+}
+
+/* Hide theme toggle checkbox properly */
+.theme-switch input {
+    display: none;
+}
+
+/* Theme Selector Styles */
+.theme-selector {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 8px;
+    z-index: 1000;
+}
+
+.theme-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-background);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+    background: var(--inactive-bg);
+}
+
+.theme-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Theme Variables */
+/* Default Theme */
+[data-theme-style="default"] {
+    --background: #FCFCFC;
+    --primary: #4353FF;
+    --primary-hover: #3544cc;
+    --success: #10B981;
+    --success-hover: #059669;
+    --gradient-start: #4353FF;
+    --gradient-end: #8B4DFF;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Modern Theme */
+[data-theme-style="modern"] {
+    --background: #F6F8F8;
+    --primary: #0EA5E9;
+    --primary-hover: #0284C7;
+    --success: #14B8A6;
+    --success-hover: #0D9488;
+    --gradient-start: #60A5FA;
+    --gradient-end: #2DD4BF;
+    font-family: 'Cal Sans', 'Inter', sans-serif;
+    --button-text: #ffffff;
+}
+
+/* Retro Theme */
+[data-theme-style="retro"] {
+    --background: #F4F2F1;
+    --primary: #F97316;
+    --primary-hover: #EA580C;
+    --success: #EC4899;
+    --success-hover: #DB2777;
+    --gradient-start: #F97316;
+    --gradient-end: #EC4899;
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    letter-spacing: -0.5px;
+}
+
+/* Minimal Theme (Monochrome) */
+[data-theme-style="minimal"] {
+    --primary: #18181B;
+    --primary-hover: #27272A;
+    --success: #52525B;
+    --success-hover: #3F3F46;
+    --gradient-start: #18181B;
+    --gradient-end: #27272A;
+    font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: -0.3px;
+}
+
+/* Dark mode variants with matching hues */
+[data-theme="dark"][data-theme-style="default"] {
+    --background: #18181B;
+    /* Dark neutral */
+    --card-background: #27272A;
+    --primary: #4353FF;
+    --primary-hover: #3544cc;
+    --text: #ffffff;
+    --text-secondary: #a1a1aa;
+    --border: #27272a;
+}
+
+[data-theme="dark"][data-theme-style="modern"] {
+    --background: #161A1A;
+    /* Dark blue-green tint */
+    --card-background: #1E2424;
+    --primary: #0EA5E9;
+    --primary-hover: #0284C7;
+    --gradient-start: #60A5FA;
+    --gradient-end: #2DD4BF;
+    --button-text: #ffffff;
+    --text: #ffffff;
+    --text-secondary: #a1a1aa;
+    --border: #2A2F2F;
+}
+
+[data-theme="dark"][data-theme-style="retro"] {
+    --background: #1A1918;
+    /* Dark warm tint */
+    --card-background: #242321;
+    --primary: #F97316;
+    --primary-hover: #EA580C;
+    --text: #ffffff;
+    --text-secondary: #a1a1aa;
+    --border: #2F2E2D;
+}
+
+[data-theme="dark"][data-theme-style="minimal"] {
+    --background: #18181B;
+    --card-background: #27272A;
+    --primary: #E4E4E7;
+    --primary-hover: #D4D4D8;
+    --text: #ffffff;
+    --text-secondary: #a1a1aa;
+    --border: #27272a;
+    --gradient-start: #FFFFFF;
+    --gradient-end: #E4E4E7;
+    --button-text: #18181B;
+    --success: #FFFFFF;
+    --success-hover: #E4E4E7;
+}
+
+/* Update the mode slider shadow for minimal theme */
+[data-theme-style="minimal"] .mode-slider {
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.15);
+}
+
+/* Specific hover state for minimal theme */
+[data-theme-style="minimal"] .mode-option:not(.active):hover {
+    color: var(--text);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Add font imports to the HTML head */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=cal-sans@400,700&display=swap');
+
+/* Theme cycle button styles */
+.theme-cycle-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: var(--card-background);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.theme-cycle-btn:hover {
+    background: var(--inactive-bg);
+    transform: translateY(-1px);
+}
+
+.theme-cycle-btn svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.theme-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Remove these theme-specific button styles completely */
+[data-theme-style="default"] .theme-cycle-btn::before,
+[data-theme-style="modern"] .theme-cycle-btn::before,
+[data-theme-style="retro"] .theme-cycle-btn::before,
+[data-theme-style="minimal"] .theme-cycle-btn::before {
+    content: none;
+}
+
+/* Update theme cycle button styles */
+.theme-cycle-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: var(--card-background);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.theme-cycle-btn:hover {
+    background: var(--inactive-bg);
+    transform: translateY(-1px);
+}
+
+.theme-cycle-btn svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.theme-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Update timer styles for each theme */
+[data-theme-style="default"] #time {
+    font-weight: 800;
+}
+
+[data-theme-style="modern"] #time {
+    font-family: 'Cal Sans';
+    font-weight: 700;
+}
+
+[data-theme-style="retro"] #time {
+    font-family: 'IBM Plex Mono';
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+[data-theme-style="minimal"] #time {
+    font-weight: 700;
+    letter-spacing: -3px;
+}
